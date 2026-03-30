@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SasNest</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family:"Poppins", sans-serif; background:#f6fbf8; color:#1f2937; }
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg,#e6f4ea,#ffffff);
+  padding:16px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #d1fae5;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+/* LOGO */
+.brand { display:flex; align-items:center; gap:14px; }
+.logo-3d {
+  width:44px; height:40px;
+  background: linear-gradient(145deg,#10b981,#065f46);
+  border-radius:10px 10px 8px 8px;
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 22px rgba(16,185,129,0.4),
+             inset 0 2px 4px rgba(255,255,255,0.35),
+             inset 0 -4px 6px rgba(0,0,0,0.25);
+}
+.logo-3d::before {
+  content:"";
+  position:absolute;
+  top:-8px;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-bottom:8px solid #10b981;
+}
+.logo-3d span { color:#fff; font-size:20px; font-weight:700; }
+
+.brand-text { display:flex; flex-direction:column; line-height:1.15; }
+.brand-text h1 { font-size:22px; font-weight:700; color:#064e3b; }
+.brand-text h1 span { color:#10b981; }
+.brand-text small { font-size:11px; color:#047857; }
+
+/* NAV */
+nav ul { list-style:none; display:flex; gap:22px; align-items:center; }
+nav a { text-decoration:none; color:#042a1f; font-weight:500; }
+
+/* AUTH */
+.auth-box { position:relative; }
+.auth-btn {
+  background:#10b981; color:white; padding:8px 14px;
+  border-radius:8px; cursor:pointer; font-weight:600;
+}
+.auth-menu {
+  position:absolute; top:45px; right:0;
+  background:white; border-radius:10px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.15);
+  display:none; min-width:200px;
+}
+.auth-menu a {
+  display:block; padding:12px 16px;
+  color:#064e3b; font-size:14px;
+}
+.auth-menu a:hover { background:#ecfdf5; }
+
+/* MAIN */
+main { max-width:1200px; margin:auto; padding:45px 20px; }
+.title { text-align:center; font-size:28px; color:#064e3b; margin-bottom:35px; }
+
+.property-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:28px;
+}
+
+.property-card {
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(16,185,129,0.12);
+  transition:.3s;
+}
+.property-card:hover {
+  transform:translateY(-8px);
+  box-shadow:0 18px 45px rgba(16,185,129,0.18);
+}
+
+.property-card img {
+  width:100%; height:190px;
+  object-fit:cover;
+}
+
+.property-card-content { padding:18px; }
+.property-card h3 { color:#064e3b; margin-bottom:6px; }
+.property-card p { font-size:14px; margin:4px 0; }
+.rating { color:#facc15; }
+
+.size-badge {
+  background:#ecfdf5; color:#047857;
+  padding:6px 10px; border-radius:8px;
+  font-size:13px; display:inline-block;
+}
+
+.property-card button {
+  width:100%; margin-top:14px; padding:11px;
+  border:none; border-radius:10px;
+  background:linear-gradient(135deg,#0e382a,#115d41);
+  color:white; font-weight:600; cursor:pointer;
+}
+
+/* FOOTER */
+footer{
+  background:#ecfdf5;
+  padding:28px;
+  margin-top:60px;
+}
+
+.footer-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+
+/* FOOTER LOGO UPDATED */
+.footer-logo{
+  height:150px;          /* bigger than before */
+  max-width:300px;       /* slightly wider */
+  object-fit:contain;
+  border-radius:16px;    /* soft rounded corners */
+  box-shadow:0 6px 20px rgba(16,185,129,0.25); /* subtle 3D shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-logo:hover{
+  transform: scale(1.1) rotate(-1deg); /* slight tilt on hover for flair */
+  box-shadow:0 12px 28px rgba(16,185,129,0.35); /* stronger shadow on hover */
+}
+
+/* Mobile adjustment */
+@media(max-width:768px){
+  .footer-logo{
+    height:80px;
+  }
+  nav ul{flex-wrap:wrap; gap:14px;}
+  .title{font-size:22px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo-3d"><span>S</span></div>
+    <div class="brand-text">
+      <h1>Sas<span>Nest</span></h1>
+       <h5 class="header-slogan">Move Smarter, Live Better</h5>
+      <small>A group of Sasraya Tradecom Private Limited</small>
+    </div>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li class="auth-box" id="authLinks">
+        <div class="auth-btn" onclick="toggleAuth()">Sign In / Sign Up</div>
+        <div class="auth-menu" id="authMenu">
+          <a href="usersignin.html?role=user">👤 User Registration</a>
+          <a href="ownersignin.html?role=owner">🏠 Owner Registration</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2 class="title">Available Properties</h2>
+  <section class="property-grid" id="propertyGrid"></section>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <img src="sasraya.jpg" alt="Sasraya Tradecom Logo" class="footer-logo">
+    <p>© 2025 SasNest · Sasraya Tradecom Private Limited</p>
+  </div>
+</footer>
+
+<script>
+function toggleAuth(){
+  const menu=document.getElementById("authMenu");
+  menu.style.display=menu.style.display==="block"?"none":"block";
+}
+
+function isUserLoggedIn(){
+  return localStorage.getItem("user")!==null;
+}
+
+function logout(){
+  localStorage.removeItem("user");
+  alert("Logged out");
+  location.reload();
+}
+
+function updateNav(){
+  if(isUserLoggedIn()){
+    document.getElementById("authLinks").innerHTML=
+      '<a href="#" onclick="logout()">Logout</a>';
+  }
+}
+
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".auth-box")){
+    document.getElementById("authMenu").style.display="none";
+  }
+});
+
+updateNav();
+
+function getStars(r){
+  return "⭐".repeat(Math.floor(r)).padEnd(5,"☆");
+}
+
+fetch("data.json")
+.then(res=>res.json())
+.then(data=>{
+  const grid=document.getElementById("propertyGrid");
+  data.forEach(p=>{
+    grid.innerHTML+=`
+    <article class="property-card">
+      <img src="${p.image}">
+      <div class="property-card-content">
+        <h3>${p.name}</h3>
+        <div class="rating">${getStars(p.rating)} (${p.rating})</div>
+        <p><b>Location:</b> ${p.location}</p>
+        <p><b>Price:</b> ${p.price}</p>
+        <p><b>Type:</b> ${p.type}</p>
+        <span class="size-badge">${p.size}</span>
+        <button onclick="viewDetails('${p.id}')">View Details</button>
+      </div>
+    </article>`;
+  });
+});
+
+function viewDetails(id){
+  if(!isUserLoggedIn()){
+    alert("Please login to view details");
+    location.href="usersignin.html";
+  }else{
+    location.href=`propertyDetails.html?id=${id}`;
+  }
+}
+</script>
+
+</body>
+</html>

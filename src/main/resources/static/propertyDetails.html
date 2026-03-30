@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Property Details - RentU</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; margin: 0; padding: 20px; }
+    .property-container { background: #fff; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    img { width: 100%; border-radius: 10px; }
+    .rating { color: gold; font-size: 1.2em; margin: 5px 0; }
+    button { margin-top: 15px; background: #0a782d; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #058d4c; }
+    #owner-info { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; display: none; background: #fafafa; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="property-container" id="property-details">
+    <p>Loading property details...</p>
+  </div>
+
+  <div id="owner-info"></div>
+
+  <script>
+    let currentProperty = null;
+
+    async function loadPropertyDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      if (!id) {
+        document.getElementById("property-details").innerHTML = "<p>Invalid property ID.</p>";
+        return;
+      }
+
+      try {
+        const response = await fetch("data.json");
+        const properties = await response.json();
+        const property = properties.find(p => p.id == id);
+        currentProperty = property;
+
+        if (!property) {
+          document.getElementById("property-details").innerHTML = "<p>Property not found.</p>";
+          return;
+        }
+
+        const stars = getStars(property.rating || 4);
+
+        document.getElementById("property-details").innerHTML = `
+          <img src="${property.image}" alt="${property.name}">
+          <h2>${property.name}</h2>
+          <div class="rating">${stars} (${property.rating || 4})</div>
+          <p><strong>Location:</strong> ${property.location}</p>
+          <p><strong>Price:</strong> ${property.price}</p>
+          <p><strong>Size:</strong> ${property.size}</p>
+          <p><strong>Type:</strong> ${property.type}</p>
+          <p><strong>Availability:</strong> ${property.availability || "Available"}</p>
+          <p>${property.description || ""}</p>
+
+          ${property.amenities?.length ? `
+            <div class="amenities">
+              <h4>Amenities:</h4>
+              <ul>${property.amenities.map(a => `<li>${a}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+
+          ${property.nearestLocations?.length ? `
+            <div class="nearest">
+              <h4>Nearest Locations:</h4>
+              <ul>${property.nearestLocations.map(n => `<li>${n}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+
+          <button onclick="showOwner(${property.ownerId})">📞 Contact Owner</button>
+          <button onclick="window.location.href='index.html'">← Back</button>
+        `;
+      } catch (err) {
+        console.error("Error loading property:", err);
+        document.getElementById("property-details").innerHTML = "<p>Failed to load property data.</p>";
+      }
+    }
+
+    function getStars(rating) {
+      const fullStars = Math.floor(rating);
+      const emptyStars = 5 - fullStars;
+      return "★".repeat(fullStars) + "☆".repeat(emptyStars);
+    }
+
+    async function showOwner(ownerId) {
+      const ownerDiv = document.getElementById("owner-info");
+      ownerDiv.style.display = "block";
+      ownerDiv.innerHTML = "<p>Loading owner details...</p>";
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/owners/${ownerId}`);
+        if (!response.ok) {
+          ownerDiv.innerHTML = "<p>Failed to load owner information.</p>";
+          return;
+        }
+
+        const owner = await response.json();
+        console.log("Owner fetched:", owner);
+
+        // ✅ Corrected keys to match camelCase from DTO
+        ownerDiv.innerHTML = `
+          <h3>Owner Details</h3>
+          <p><strong>Name:</strong> ${owner.ownerName || "Not available"}</p>
+          <p><strong>Email:</strong> ${owner.ownerEmail || "Not available"}</p>
+          <p><strong>Phone:</strong> ${owner.ownerMobileNumber || "Not available"}</p>
+        `;
+      } catch (err) {
+        console.error("Error fetching owner:", err);
+        ownerDiv.innerHTML = "<p>Error loading owner details.</p>";
+      }
+    }
+
+    loadPropertyDetails();
+  </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Auth | RentU</title>
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg,#d7dee5,#063117);
+  height: 100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+.container {
+  background:#fff;
+  padding:30px;
+  border-radius:12px;
+  width:360px;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  text-align:center;
+}
+h2 { margin-bottom:20px; color:#073425; }
+input {
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+button {
+  width:100%;
+  padding:10px;
+  background:#166b0f;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+button:hover { background:#10aa62; }
+.hidden { display:none; }
+a { font-size:14px; cursor:pointer; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LOGIN -->
+<form id="signinForm">
+  <h2>Owner Sign In</h2>
+  <input id="loginEmail" type="email" placeholder="Email" required>
+  <input id="loginPassword" type="password" placeholder="Password" required>
+  <button type="submit">Login</button>
+  <p><a onclick="showSignup()">Create account</a></p>
+</form>
+
+<!-- REGISTER -->
+<form id="signupForm" class="hidden">
+  <h2>Create Owner</h2>
+  <input id="ownerName" placeholder="Name" required>
+  <input id="ownerEmail" type="email" placeholder="Email" required>
+  <input id="ownerMobile" placeholder="Mobile" required>
+  <input id="ownerPassword" type="password" placeholder="Password" required>
+  <button type="submit">Register</button>
+  <p><a onclick="showSignin()">Back to Login</a></p>
+</form>
+
+</div>
+
+<script>
+const signinForm = document.getElementById("signinForm");
+const signupForm = document.getElementById("signupForm");
+
+function showSignup(){
+  signinForm.classList.add("hidden");
+  signupForm.classList.remove("hidden");
+}
+
+function showSignin(){
+  signupForm.classList.add("hidden");
+  signinForm.classList.remove("hidden");
+}
+
+/* REGISTER OWNER */
+signupForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+
+  const ownerData = {
+    ownerName: ownerName.value,
+    ownerEmail: ownerEmail.value,
+    ownerMobileNumber: ownerMobile.value,
+    ownerPassword: ownerPassword.value
+  };
+
+  const res = await fetch("http://localhost:8080/api/owner/register",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(ownerData)
+  });
+
+  if(!res.ok) return alert("Registration failed");
+
+  alert("Owner Registered Successfully");
+  showSignin();
+});
+
+/* LOGIN OWNER */
+signinForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+
+  const res = await fetch("http://localhost:8080/api/owner/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      ownerEmail: loginEmail.value,
+      ownerPassword: loginPassword.value
+    })
+  });
+
+  if(!res.ok) return alert("Invalid login");
+
+  localStorage.setItem("owner", JSON.stringify(await res.json()));
+  window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
